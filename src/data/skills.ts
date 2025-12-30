@@ -17,7 +17,7 @@ export async function loadSkills() {
 	Object.entries(skillsData).forEach(([key, skillData]) => {
 		// Add the key to the skill object
 		const skill: Skill = { ...skillData, key };
-		
+
 		if (!skillsByCharacter[skill.character]) {
 			skillsByCharacter[skill.character] = [];
 			skillLookupByCharacter[skill.character] = new Map();

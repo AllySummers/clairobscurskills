@@ -62,7 +62,7 @@ export const SkillItem = memo(
 			return parts.length > 0 ? parts.join(' | ') : null;
 		}, [skill.prerequisites]);
 
-		const isDisabled = !isGradient || (!isSelected && !prerequisitesMet);
+		const isDisabled = isGradient || (!isSelected && !prerequisitesMet);
 		const containerRef = useRef<HTMLDivElement>(null);
 		const [isFocused, setIsFocused] = useState(false);
 		const focusTimeoutRef = useRef<number | null>(null);
