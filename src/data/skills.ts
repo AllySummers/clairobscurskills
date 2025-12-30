@@ -1,22 +1,32 @@
-import skillsData from "../../skills.json" with { type: "json" };
-import type { Skill } from "../types.ts";
+import skillsUrl from '../../skills.json?url';
+import type { Skill } from '../types.ts';
 
-// Parse skills and group by character (include all characters including Monoco)
-export const skillsByCharacter: Record<string, Skill[]> = {};
-export const skillLookupByCharacter: Record<string, Map<string, Skill>> = {};
+// Will be populated after loading
+export let skillsByCharacter: Record<string, Skill[]> = {};
+export let skillLookupByCharacter: Record<string, Map<string, Skill>> = {};
+export let defaultCharacters: string[] = [];
 
-Object.values(skillsData as Record<string, Skill>).forEach((skill) => {
-    if (!skillsByCharacter[skill.character]) {
-        skillsByCharacter[skill.character] = [];
-        skillLookupByCharacter[skill.character] = new Map();
-    }
-    skillsByCharacter[skill.character]!.push(skill);
-    skillLookupByCharacter[skill.character]!.set(skill.name, skill);
-});
+// Load and parse skills from external JSON file
+export async function loadSkills() {
+	const response = await fetch(skillsUrl);
+	const skillsData = (await response.json()) as Record<string, Skill>;
 
-// Sort skills by SP cost (ascending)
-Object.keys(skillsByCharacter).forEach((char) => {
-    skillsByCharacter[char]!.sort((a, b) => a.spCost - b.spCost);
-});
+	skillsByCharacter = {};
+	skillLookupByCharacter = {};
 
-export const defaultCharacters = Object.keys(skillsByCharacter);
+	Object.values(skillsData).forEach((skill) => {
+		if (!skillsByCharacter[skill.character]) {
+			skillsByCharacter[skill.character] = [];
+			skillLookupByCharacter[skill.character] = new Map();
+		}
+		skillsByCharacter[skill.character]!.push(skill);
+		skillLookupByCharacter[skill.character]!.set(skill.name, skill);
+	});
+
+	// Sort skills by SP cost (ascending)
+	Object.keys(skillsByCharacter).forEach((char) => {
+		skillsByCharacter[char]!.sort((a, b) => a.spCost - b.spCost);
+	});
+
+	defaultCharacters = Object.keys(skillsByCharacter);
+}
