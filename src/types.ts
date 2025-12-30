@@ -22,7 +22,8 @@ export type Prerequisite =
 
 export interface Skill {
 	character: string;
-	name: string;
+	key: string; // JSON key (without accents)
+	name: string; // Display name (with accents)
 	nameImg?: string;
 	description: string;
 	cost: number;

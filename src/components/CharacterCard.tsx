@@ -115,14 +115,18 @@ export const CharacterCard = memo(
 
 			return skill.prerequisites.every((prereq) => {
 				if (prereq.type === 'SKILL') {
-					return prereq.skills.some((reqSkill) =>
-						charSelectedSkills.has(reqSkill.name),
-					);
+					return prereq.skills.some((reqSkill) => {
+						// Look up the actual skill by the prerequisite name (could be key or name)
+						const actualSkill = skillLookupByCharacter[character]?.get(reqSkill.name);
+						// Use the actual skill.name (with accents) for checking
+						const skillNameToCheck = actualSkill ? actualSkill.name : reqSkill.name;
+						return charSelectedSkills.has(skillNameToCheck);
+					});
 				}
 				return true;
 			});
 		},
-		[charSelectedSkills],
+		[charSelectedSkills, character],
 	);
 
 		return (
