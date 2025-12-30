@@ -8,4 +8,3 @@ export const normalizeString = (str: string): string =>
 // Stable empty references to prevent unnecessary re-renders
 export const EMPTY_SET = new Set<string>();
 export const EMPTY_ARRAY: string[] = [];
-

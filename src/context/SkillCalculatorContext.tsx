@@ -27,6 +27,7 @@ interface SkillCalculatorActionsType {
 	createNewRow: () => void;
 	deleteRow: (rowIndex: number) => void;
 	handleLoad: (data: SaveData) => void;
+	resetCharacter: (character: string, totalSP: number) => void;
 }
 
 interface SkillCalculatorStateType {
@@ -257,6 +258,26 @@ export const SkillCalculatorProvider = ({ children }: { children: ReactNode }) =
 		});
 	}, []);
 
+	const resetCharacter = useCallback((character: string, totalSP: number) => {
+		// Clear all selected skills for this character
+		setSelectedSkills((prev) => ({
+			...prev,
+			[character]: new Set<string>(),
+		}));
+
+		// Clear all field skills for this character
+		setFieldSkills((prev) => ({
+			...prev,
+			[character]: [],
+		}));
+
+		// Set unallocated SP to the total
+		setUnallocatedSP((prev) => ({
+			...prev,
+			[character]: totalSP,
+		}));
+	}, []);
+
 	const addToTeam = useCallback((teamNum: 1 | 2, character: string) => {
 		setTeams((prev) => {
 			const teamKey = `team${teamNum}` as 'team1' | 'team2';
@@ -433,6 +454,7 @@ export const SkillCalculatorProvider = ({ children }: { children: ReactNode }) =
 			createNewRow,
 			deleteRow,
 			handleLoad,
+			resetCharacter,
 		}),
 		[
 			toggleSkill,
@@ -448,6 +470,7 @@ export const SkillCalculatorProvider = ({ children }: { children: ReactNode }) =
 			createNewRow,
 			deleteRow,
 			handleLoad,
+			resetCharacter,
 		],
 	);
 

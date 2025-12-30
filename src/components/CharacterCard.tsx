@@ -23,8 +23,14 @@ export const CharacterCard = memo(
 		charFieldSkills,
 		isDragging,
 	}: CharacterCardProps) => {
-		const { updateUnallocatedSP, handleDragStart, handleDragOver, handleDrop, handleDragEnd } =
-			useSkillCalculatorActions();
+		const {
+			updateUnallocatedSP,
+			handleDragStart,
+			handleDragOver,
+			handleDrop,
+			handleDragEnd,
+			resetCharacter,
+		} = useSkillCalculatorActions();
 
 		const skills = useMemo(() => skillsByCharacter[character] ?? [], [character]);
 
@@ -130,6 +136,16 @@ export const CharacterCard = memo(
 			},
 			[charSelectedSkills, character],
 		);
+
+		const handleReset = useCallback(() => {
+			if (
+				confirm(
+					`Recoat ${character}? This will unlock all skills and set available SP to ${totalSP}.`,
+				)
+			) {
+				resetCharacter(character, totalSP);
+			}
+		}, [character, totalSP, resetCharacter]);
 
 		return (
 			<article
@@ -261,6 +277,31 @@ export const CharacterCard = memo(
 							>
 								Total: {totalSP}
 							</div>
+
+							<button
+								onClick={handleReset}
+								style={{
+									fontSize: '12px',
+									padding: '3px 8px',
+									backgroundColor: '#d32f2f',
+									color: '#fff',
+									border: 'none',
+									borderRadius: '12px',
+									fontWeight: '600',
+									cursor: 'pointer',
+									whiteSpace: 'nowrap',
+									flexShrink: 0,
+									transition: 'background-color 0.2s',
+								}}
+								onMouseEnter={(e) => {
+									e.currentTarget.style.backgroundColor = '#b71c1c';
+								}}
+								onMouseLeave={(e) => {
+									e.currentTarget.style.backgroundColor = '#d32f2f';
+								}}
+							>
+								Recoat
+							</button>
 						</div>
 					)}
 				</header>

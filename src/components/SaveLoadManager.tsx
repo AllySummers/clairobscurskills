@@ -178,4 +178,3 @@ export const SaveLoadManager = ({ onLoad }: SaveLoadManagerProps) => {
 		</details>
 	);
 };
-
