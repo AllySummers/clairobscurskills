@@ -52,4 +52,3 @@ export interface NamedSave {
 	data: SaveData;
 	timestamp: number;
 }
-

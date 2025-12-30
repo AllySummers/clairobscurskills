@@ -109,25 +109,27 @@ export const CharacterCard = memo(
 
 		const totalSP = allocatedSP + charUnallocatedSP;
 
-	const checkPrerequisitesMet = useCallback(
-		(skill: Skill): boolean => {
-			if (!skill.prerequisites || skill.prerequisites.length === 0) return true;
+		const checkPrerequisitesMet = useCallback(
+			(skill: Skill): boolean => {
+				if (!skill.prerequisites || skill.prerequisites.length === 0) return true;
 
-			return skill.prerequisites.every((prereq) => {
-				if (prereq.type === 'SKILL') {
-					return prereq.skills.some((reqSkill) => {
-						// Look up the actual skill by the prerequisite name (could be key or name)
-						const actualSkill = skillLookupByCharacter[character]?.get(reqSkill.name);
-						// Use the actual skill.name (with accents) for checking
-						const skillNameToCheck = actualSkill ? actualSkill.name : reqSkill.name;
-						return charSelectedSkills.has(skillNameToCheck);
-					});
-				}
-				return true;
-			});
-		},
-		[charSelectedSkills, character],
-	);
+				return skill.prerequisites.every((prereq) => {
+					if (prereq.type === 'SKILL') {
+						return prereq.skills.some((reqSkill) => {
+							// Look up the actual skill by the prerequisite name (could be key or name)
+							const actualSkill = skillLookupByCharacter[character]?.get(
+								reqSkill.name,
+							);
+							// Use the actual skill.name (with accents) for checking
+							const skillNameToCheck = actualSkill ? actualSkill.name : reqSkill.name;
+							return charSelectedSkills.has(skillNameToCheck);
+						});
+					}
+					return true;
+				});
+			},
+			[charSelectedSkills, character],
+		);
 
 		return (
 			<article
