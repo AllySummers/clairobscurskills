@@ -5,8 +5,8 @@
 	"scripts": {
 		"build": "vite build",
 		"dev": "vite dev",
-		"deploy": "npx wrangler deploy --assets dist",
-		"deploy:preview": "npx wrangler versions upload --assets dist"
+		"deploy": "npx wrangler deploy --assets dist --compatibility-date 2025-12-30",
+		"deploy:preview": "npx wrangler versions upload --assets dist --compatibility-date 2025-12-30"
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.4",
