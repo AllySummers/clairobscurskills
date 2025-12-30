@@ -109,21 +109,21 @@ export const CharacterCard = memo(
 
 		const totalSP = allocatedSP + charUnallocatedSP;
 
-		const checkPrerequisitesMet = useCallback(
-			(skill: Skill): boolean => {
-				if (!skill.prerequisites || skill.prerequisites.length === 0) return true;
+	const checkPrerequisitesMet = useCallback(
+		(skill: Skill): boolean => {
+			if (!skill.prerequisites || skill.prerequisites.length === 0) return true;
 
-				return skill.prerequisites.every((prereq) => {
-					if (prereq.type === 'SKILL') {
-						return prereq.skills.every((reqSkill) =>
-							charSelectedSkills.has(reqSkill.name),
-						);
-					}
-					return true;
-				});
-			},
-			[charSelectedSkills],
-		);
+			return skill.prerequisites.every((prereq) => {
+				if (prereq.type === 'SKILL') {
+					return prereq.skills.some((reqSkill) =>
+						charSelectedSkills.has(reqSkill.name),
+					);
+				}
+				return true;
+			});
+		},
+		[charSelectedSkills],
+	);
 
 		return (
 			<article

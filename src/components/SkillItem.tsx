@@ -39,28 +39,28 @@ export const SkillItem = memo(
 	}: SkillItemProps) => {
 		const { toggleSkill, toggleFieldSkill } = useSkillCalculatorActions();
 		// Format prerequisite HTML for display with clickable skill links
-		const prerequisiteHTML = useMemo(() => {
-			if (!skill.prerequisites || skill.prerequisites.length === 0) return null;
+	const prerequisiteHTML = useMemo(() => {
+		if (!skill.prerequisites || skill.prerequisites.length === 0) return null;
 
-			const parts: string[] = [];
-			skill.prerequisites.forEach((prereq) => {
-				if (prereq.type === 'SKILL' && prereq.skills.length > 0) {
-					const skillLinks = prereq.skills
-						.map(
-							(s) =>
-								`<span class="prereq-skill" data-skill-name="${s.name}" style="color: #4CAF50; cursor: pointer; text-decoration: underline;">${s.name}</span>`,
-						)
-						.join(', ');
-					parts.push(`Skills: ${skillLinks}`);
-				} else if (prereq.type === 'RELATIONSHIP') {
-					parts.push(`Relationship: ${prereq.character} (Lvl ${prereq.level})`);
-				} else if (prereq.type === 'ENEMY') {
-					parts.push(`Enemy: ${prereq.name}`);
-				}
-			});
+		const parts: string[] = [];
+		skill.prerequisites.forEach((prereq) => {
+			if (prereq.type === 'SKILL' && prereq.skills.length > 0) {
+				const skillLinks = prereq.skills
+					.map(
+						(s) =>
+							`<span class="prereq-skill" data-skill-name="${s.name}" style="color: #4CAF50; cursor: pointer; text-decoration: underline;">${s.name}</span>`,
+					)
+					.join(' or ');
+				parts.push(`Skills: ${skillLinks}`);
+			} else if (prereq.type === 'RELATIONSHIP') {
+				parts.push(`Relationship: ${prereq.character} (Lvl ${prereq.level})`);
+			} else if (prereq.type === 'ENEMY') {
+				parts.push(`Enemy: ${prereq.name}`);
+			}
+		});
 
-			return parts.length > 0 ? parts.join(' | ') : null;
-		}, [skill.prerequisites]);
+		return parts.length > 0 ? parts.join(' | ') : null;
+	}, [skill.prerequisites]);
 
 		const isDisabled = isGradient || (!isSelected && !prerequisitesMet);
 		const containerRef = useRef<HTMLDivElement>(null);
