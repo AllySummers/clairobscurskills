@@ -4,7 +4,9 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
-		"dev": "vite dev"
+		"dev": "vite dev",
+		"deploy": "npx wrangler deploy --assets dist",
+		"deploy:preview": "npx wrangler versions upload --assets dist"
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.4",
